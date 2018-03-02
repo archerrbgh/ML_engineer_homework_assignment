@@ -1,11 +1,14 @@
 ### Algorithms taken from https://github.com/cognoa/cognoa/tree/develop/app/calculators,
 ### Converted from ruby
+import numpy as np
+
 
 def branch(score, fulcrum, low, high):
 	if score < fulcrum:
 		return low
 	else:
 		return high
+
 
 class Cog1Calculator(object):
 	def __init__(self):
@@ -17,7 +20,7 @@ class Cog1Calculator(object):
 	def get_risk_level(self, row):
 		score = row['cog1_response']
 		age_months = row['age_months']
-		if age_months<48:
+		if age_months < 48:
 			if score < -9:
 				return 'high_risk'
 			elif score < -6:
@@ -59,25 +62,24 @@ class Cog1Calculator(object):
 		calc_so_far = self.C1(vC1, calc_so_far)
 		return calc_so_far
 
-
 	def B10(self, vB10, vB2, vC2, init):
-		if vB10<1.5:
-			init+=0.254
-			init = self.B2(vB2,vC2,init)
-		elif vB10>=1.5:
-			init+=-1.345
-		if vB10<0.5:
-			init+=0.735
-		elif vB10>=0.5:
-			init+=-0.47
+		if vB10 < 1.5:
+			init += 0.254
+			init = self.B2(vB2, vC2, init)
+		elif vB10 >= 1.5:
+			init += -1.345
+		if vB10 < 0.5:
+			init += 0.735
+		elif vB10 >= 0.5:
+			init += -0.47
 		return init
 
 	def B2(self, vB2,vC2,init):
-		if vB2<1.5:
-			init+=0.545
-			init=self.C2(vC2,init)
-		elif vB2>=1.5:
-			init+=-0.487
+		if vB2 < 1.5:
+			init += 0.545
+			init = self.C2(vC2,init)
+		elif vB2 >= 1.5:
+			init += -0.487
 		return init
 
 	def C2(self, vC2, init):
@@ -85,10 +87,10 @@ class Cog1Calculator(object):
 		return init
 	
 	def B1(self, vB1, vA2, init):
-		if vB1<1:
-			init+=0.99
-		elif vB1>=1:
-			init+=-0.532
+		if vB1 < 1:
+			init += 0.99
+		elif vB1 >= 1:
+			init += -0.532
 			init = self.A2(vA2, init)
 		return init
 	
@@ -117,8 +119,6 @@ class Cog1Calculator(object):
 		return input_df
 
 
-import numpy as np
-
 class Cog2Calculator(object):
 	def __init__(self):
 		pass
@@ -135,9 +135,9 @@ class Cog2Calculator(object):
 			return 'low_risk'
 
 	def clean_column(self, value):
-		if value in [7,8]:
+		if value in [7, 8]:
 			return 0
-		elif value in [0,1,2,3,4]:
+		elif value in [0, 1, 2, 3, 4]:
 			return value
 		raise ValueError('unexpected score '+str(value))
 	
@@ -147,9 +147,9 @@ class Cog2Calculator(object):
 		### Clean it
 		for question in questions:
 			df_for_calculation[question] = df_for_calculation[question].apply(self.clean_column)
-		log_odds = (-15.8657 + 2.2539 * input_df['ados2_a5'] + 3.0323 * input_df['ados2_a8'] +\
-			3.8820 * input_df['ados2_b1'] + 4.3625 * input_df['ados2_c4'] +\
-			5.0750 * input_df['ados2_b8'] + 4.0215 * input_df['ados2_b8'] +\
+		log_odds = (-15.8657 + 2.2539 * input_df['ados2_a5'] + 3.0323 * input_df['ados2_a8'] +
+			3.8820 * input_df['ados2_b1'] + 4.3625 * input_df['ados2_c4'] +
+			5.0750 * input_df['ados2_b8'] + 4.0215 * input_df['ados2_b8'] +
 			3.8299 * input_df['ados2_b9'] + 3.4053 * input_df['ados2_d2'] + 2.6616 * input_df['ados2_c3'])
 		probability_of_diagnosis = 1./(1. + np.exp(-1 * log_odds))
 		input_df['cog2_response'] = probability_of_diagnosis
