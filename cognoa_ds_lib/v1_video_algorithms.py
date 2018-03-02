@@ -1,6 +1,11 @@
-### Algorithms taken from https://github.com/cognoa/cognoa/tree/develop/app/calculators,
-### Converted from ruby
+# Algorithms taken from https://github.com/cognoa/cognoa/tree/develop/app/calculators,
+# Converted from ruby
 import numpy as np
+
+# A lot of the variable names are not very descriptive and could use renaming
+# Additionally, a lot of the numbers seem fairly arbitrary and could use explanation (this applies to all files)
+# Possibly have a configuration file that can be read by the program, so values can be changed there instead of
+# in the program
 
 
 def branch(score, fulcrum, low, high):

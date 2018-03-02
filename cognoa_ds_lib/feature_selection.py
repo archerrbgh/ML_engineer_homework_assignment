@@ -51,7 +51,7 @@ def incorporate_new_adir_features_to_aggregations(in_df, old_features, new_featu
         return out_df
     all_base_features = old_features + new_features
     for feature in ['adir_max_severity', 'adir_min_severity', 'adir_severity_0_count', 'adir_severity_1_count',
-                   'adir_severity_2_count', 'adir_severity_3_count', 'adir_severity_4_count']:
+                    'adir_severity_2_count', 'adir_severity_3_count', 'adir_severity_4_count']:
         if feature in all_base_features:
             all_base_features.remove(feature)
     out_df['adir_max_severity'] = out_df[all_base_features].apply(lambda row: get_severity("max", row), axis=1)
@@ -65,7 +65,8 @@ def incorporate_new_adir_features_to_aggregations(in_df, old_features, new_featu
 
 
 def run_new_feature_importance_tally(in_df, for_sure_features, new_candidate_features, number_of_tries,
-    enforce_group_weight_instructions, number_of_features_to_keep, relative_weight_cutoff, model_parameters_dict):
+                                     enforce_group_weight_instructions, number_of_features_to_keep,
+                                     relative_weight_cutoff, model_parameters_dict):
     """ run number_of_tries bootstrapping experiments to tally using both the original and the new candidate features, 
 	figure out which *of the new* features are the most important
     ... for_sure_features represents features that are used, but which you will ignore when tallying.
@@ -161,8 +162,8 @@ def run_new_feature_importance_tally(in_df, for_sure_features, new_candidate_fea
     return final_tally_df
 
 
-def bootstrap_cross_validate_new_features(data_df, new_features_to_try, for_sure_features, model_parameters_dict, 
-        enforce_group_weight_instructions, n_folds ):
+def bootstrap_cross_validate_new_features(data_df, new_features_to_try, for_sure_features, model_parameters_dict,
+                                          enforce_group_weight_instructions, n_folds):
     """ This function would be run in a chain after the run_new_feature_importance_tally function has been run
     if it is desired to get an estimate of the out-of-sample error on the new features. In contrast to the run_new_feature_importance_tally
     function, it is set up to only consider a single new candidate feature to try at a time (and even so runs pretty slow)

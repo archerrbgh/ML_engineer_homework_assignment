@@ -178,7 +178,7 @@ def run_inconclusive_model_pseudo_experiments(n_expts, n_xvalid_expts, frac_hold
         validation_df['reliability_prob'] = [ele[1] for ele in reliability_model.predict_proba(x_validate)]
         validation_df['reliability_prediction'] = ['reliable' if ele>reliability_cutoff else 'not' for ele in validation_df['reliability_prob'].values]
     
-        restricted_validation_df = validation_df[validation_df['reliability_prediction']=='reliable']
+        restricted_validation_df = validation_df[validation_df['reliability_prediction'] == 'reliable']
         restricted_validation_sample_weights = validation_sample_weights[validation_sample_weights.index.isin(restricted_validation_df.index)]
         restricted_validation_output = ds_helper_functions.cross_validate_model(restricted_validation_df, restricted_validation_sample_weights, 
                                 feature_columns, feature_encoding_map, outcome_column, None, n_folds,
